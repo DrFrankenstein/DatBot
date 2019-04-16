@@ -2,5 +2,5 @@
 
 add_executable (DatBot 
     "DatBot.cpp" 
-    "AsioDevice.cpp" 
+    "Net/AsioDevice.cpp" 
 )

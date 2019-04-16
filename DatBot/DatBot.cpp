@@ -6,37 +6,38 @@
 #include <boost/asio.hpp>
 #include <rxcpp/rx.hpp>
 
-#include "AsioDevice.hpp"
+#include "Net/AsioDevice.hpp"
 
-namespace asio = boost::asio;
+    namespace asio = boost::asio;
 
+namespace Bot {
 class IrcBot
 {
 public:
-    IrcBot(AsioDevice& reader)
+    IrcBot(Net::AsioDevice& reader)
         : _reader(reader)
-    { 
-       _messagesSub = _reader.messages().subscribe(
+    {
+        _messagesSub = _reader.messages().subscribe(
             [this](auto message) { onMessage(message); },
-            [this](std::exception_ptr& ex) { onError(ex); },
+            [this](std::exception_ptr & ex) { onError(ex); },
             [this]() { onComplete(); }
-       );
+        );
 
-       _statesSub = _reader.states().subscribe(
+        _statesSub = _reader.states().subscribe(
             [this](auto state) { onState(state); },
-            [this](std::exception_ptr& ex) { onError(ex); },
+            [this](std::exception_ptr & ex) { onError(ex); },
             [this]() { onComplete(); }
-       );
+        );
 
-       reader.connect();
+        reader.connect();
     }
 
 private:
-    void onState(ConnectionState state)
+    void onState(Net::ConnectionState state)
     {
         switch (state)
         {
-        case ConnectionState::ONLINE:
+        case Net::ConnectionState::ONLINE:
             _reader.sendRaw("USER DrFrankTest 0 * :Dr Frankenstein");
             _reader.sendRaw("NICK DrFrankTest");
             break;
@@ -56,16 +57,17 @@ private:
         std::cout << "DONE" << std::endl;
     }
 
-    AsioDevice& _reader;
+    Net::AsioDevice& _reader;
     rxcpp::subscription _messagesSub;
     rxcpp::subscription _statesSub;
 };
+}
 
 int main()
 {
     asio::io_context io;
-    AsioDevice tcpreader (io, "irc.snoonet.org", 6667);
-    IrcBot bot (tcpreader);
+    Net::AsioDevice tcpreader(io, "irc.snoonet.org", 6667);
+    Bot::IrcBot bot(tcpreader);
 
     io.run();
 }

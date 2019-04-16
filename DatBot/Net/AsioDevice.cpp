@@ -5,6 +5,8 @@
 #include <iterator>
 #include <boost/asio.hpp>
 
+namespace Net {
+
 namespace asio = boost::asio;
 using boost::system::error_code;
 
@@ -89,4 +91,6 @@ std::string AsioDevice::extractLine(std::string& data)
     std::string line { begin, delim };
     data.erase(begin, delim);
     return line;
+}
+
 }

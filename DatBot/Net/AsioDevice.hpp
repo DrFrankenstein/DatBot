@@ -6,6 +6,8 @@
 #include <queue>
 #include <boost/asio.hpp>
 
+namespace Net {
+
 class AsioDevice : public DeviceBase<AsioDevice>
 {
     using context = boost::asio::io_context;
@@ -34,3 +36,5 @@ private:
     std::queue<std::string> _writeQueue;
     std::string _readBuf;
 };
+
+}

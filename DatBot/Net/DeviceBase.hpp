@@ -5,6 +5,8 @@
 #include <exception>
 #include <rxcpp/rx.hpp>
 
+namespace Net {
+
 enum class ConnectionState
 {
     ONLINE, OFFLINE
@@ -44,3 +46,5 @@ private:
     rxcpp::subjects::subject<std::string> _messages;
     rxcpp::subjects::subject<ConnectionState> _state;
 };
+
+}
