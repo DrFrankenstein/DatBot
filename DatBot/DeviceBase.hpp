@@ -41,7 +41,6 @@ private:
     std::string _host;
     std::uint16_t _port;
 
-    rxcpp::observable<std::string> _packets;
     rxcpp::subjects::subject<std::string> _messages;
     rxcpp::subjects::subject<ConnectionState> _state;
 };
