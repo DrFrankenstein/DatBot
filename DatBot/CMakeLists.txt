@@ -3,4 +3,5 @@
 add_executable (DatBot 
     "DatBot.cpp" 
     "Net/AsioDevice.cpp" 
+    "Irc/Parsers/MessageParser.cpp"
 )
