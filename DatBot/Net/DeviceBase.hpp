@@ -7,44 +7,44 @@
 
 namespace Net {
 
-enum class ConnectionState
-{
-    ONLINE, OFFLINE
-};
-
-template <class Impl>
-class DeviceBase
-{
-public:
-    DeviceBase(const std::string& host, const std::uint16_t port)
-        : _host(host), _port(port)
-    { }
-
-    rxcpp::observable<std::string> messages()
+    enum class ConnectionState
     {
-        return _messages.get_observable();
-    }
-    rxcpp::observable<ConnectionState> states() { return _state.get_observable(); }
+        ONLINE, OFFLINE
+    };
 
-    void connect() { impl().doConnect(); }
+    template <class Impl>
+    class DeviceBase
+    {
+    public:
+        DeviceBase(const std::string& host, const std::uint16_t port)
+            : _host(host), _port(port)
+        { }
 
-    void sendRaw(const std::string& message) { impl().doSendRaw(message); }
+        rxcpp::observable<std::string> messages()
+        {
+            return _messages.get_observable();
+        }
+        rxcpp::observable<ConnectionState> states() { return _state.get_observable(); }
 
-protected:
-    std::string& host() { return _host; }
-    std::uint16_t port() { return _port; }
-    void setState(ConnectionState state) { _state.get_subscriber().on_next(state); }
-    void onMessage(const std::string& message) { _messages.get_subscriber().on_next(message); }
-    void onError() { _messages.get_subscriber().on_error(std::current_exception()); }
+        void connect() { impl().doConnect(); }
 
-private:
-    Impl& impl() { return *static_cast<Impl*>(this); }
+        void sendRaw(const std::string& message) { impl().doSendRaw(message); }
 
-    std::string _host;
-    std::uint16_t _port;
+    protected:
+        std::string& host() { return _host; }
+        std::uint16_t port() { return _port; }
+        void setState(ConnectionState state) { _state.get_subscriber().on_next(state); }
+        void onMessage(const std::string& message) { _messages.get_subscriber().on_next(message); }
+        void onError() { _messages.get_subscriber().on_error(std::current_exception()); }
 
-    rxcpp::subjects::subject<std::string> _messages;
-    rxcpp::subjects::subject<ConnectionState> _state;
-};
+    private:
+        Impl& impl() { return *static_cast<Impl*>(this); }
+
+        std::string _host;
+        std::uint16_t _port;
+
+        rxcpp::subjects::subject<std::string> _messages;
+        rxcpp::subjects::subject<ConnectionState> _state;
+    };
 
 }

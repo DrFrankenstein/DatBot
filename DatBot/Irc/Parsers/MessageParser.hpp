@@ -4,8 +4,8 @@
 
 #include "../Models/Message.hpp"
 
-namespace Irc { namespace Parsers {
+namespace Irc::Parsers {
 
-bool parseMessage(const std::string& input, Irc::Models::Message& message);
+    bool parseMessage(const std::string& input, Irc::Models::Message& message);
 
-}}
+}

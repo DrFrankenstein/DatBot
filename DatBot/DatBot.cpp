@@ -8,7 +8,7 @@
 
 #include "Net/AsioDevice.hpp"
 
-    namespace asio = boost::asio;
+namespace asio = boost::asio;
 
 namespace Bot {
 class IrcBot
