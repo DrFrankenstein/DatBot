@@ -3,18 +3,27 @@
 
 #include <string>
 #include <cstdint>
+#include <cctype>
 #include <boost/spirit/include/qi_parse.hpp>
 #include <boost/spirit/include/qi_numeric.hpp>
 
 namespace Irc { namespace Parsers {
+ 
+using std::string;
+using std::uint16_t;
+using std::isalpha;
+using std::isalnum;
+
+using boost::spirit::qi::uint_parser;
+using boost::spirit::qi::parse;
 
 using Irc::Models::Message;
-using Iterator = std::string::const_iterator;
-namespace qi = boost::spirit::qi;
 
-std::string escapeTagValue(const std::string& value)
+using Iterator = string::const_iterator;
+
+std::string escapeTagValue(const string& value)
 {
-    std::string escaped;
+    string escaped;
 
     for (char c : value)
     {   // <http://ircv3.net/specs/core/message-tags-3.2.html>
@@ -112,22 +121,22 @@ static bool parseCommand(Iterator& it, const Iterator& end, Message& message)
     if (it == end)
         return false;
 
-    std::uint16_t numeric;
-    qi::uint_parser<std::uint16_t, 10, 3, 3> numParser;
-    if (qi::parse(it, end, numParser, numeric))
+    uint16_t numeric;
+    uint_parser<uint16_t, 10, 3, 3> numParser;
+    if (parse(it, end, numParser, numeric))
     {
         message.command = numeric;
     }
     else
     {
         Iterator start = it;
-        while (it != end && std::isalpha(*it))
+        while (it != end && isalpha(*it))
             ++it;
 
         if (it == start)
             return false;   // empty command, or number doesn't have 3 digits
 
-        message.command = std::string { start, it };
+        message.command = string { start, it };
     }
 
     return true;
@@ -149,7 +158,7 @@ static bool parsePrefix(Iterator& it, const Iterator& end, Message& message)
     return true;
 }
 
-static bool parseTagValue(Iterator& it, const Iterator& end, std::string& value)
+static bool parseTagValue(Iterator& it, const Iterator& end, string& value)
 {   // [ircv3.2] <escaped value> ::= <sequence of any characters except NUL, CR, LF, semicolon (`;`) and SPACE>
     for (; it != end; ++it)
     {
@@ -208,7 +217,7 @@ static bool parseTagKey(Iterator& it, const Iterator& end, std::string& key)
     {
         char c = *it;
 
-        if (c != '-' && !std::isalnum(c))
+        if (c != '-' && !isalnum(c))
         {
             if (c == '.' || c == ':')
             {
@@ -238,7 +247,7 @@ static bool parseTagKey(Iterator& it, const Iterator& end, std::string& key)
 
 static bool parseTag(Iterator& it, const Iterator& end, Message& message)
 {   // [ircv3.2] <tag> ::= <key> ['=' <escaped value>]
-    std::string key, value;
+    string key, value;
 
     if (it == end)
         return false;   // expected a tag, not end

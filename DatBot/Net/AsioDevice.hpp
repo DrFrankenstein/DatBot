@@ -13,6 +13,8 @@ class AsioDevice : public DeviceBase<AsioDevice>
     using context = boost::asio::io_context;
     using tcp = boost::asio::ip::tcp;
 
+    using error_code = boost::system::error_code;
+
 public:
     AsioDevice(context& context, const std::string& host, const::uint16_t port);
     
@@ -20,13 +22,13 @@ public:
     void doConnect();
 
 private:
-    void onConnect(const boost::system::error_code& err, tcp::endpoint&);
+    void onConnect(const error_code& err, tcp::endpoint&);
 
     void readNext();
-    void onRead(const boost::system::error_code& err, std::size_t size);
+    void onRead(const error_code& err, std::size_t size);
 
     void writeNext();
-    void onWrite(const boost::system::error_code& err, std::size_t size);
+    void onWrite(const error_code& err, std::size_t size);
 
     std::string extractLine(std::string& data);
 
