@@ -1,15 +1,16 @@
 #include "MessageParser.hpp"
 #include "../Models/Message.hpp"
 
-#include <string>
-#include <cstdint>
 #include <cctype>
-#include <boost/spirit/include/qi_parse.hpp>
+#include <cstdint>
+#include <exception>
+#include <string>
 #include <boost/spirit/include/qi_numeric.hpp>
+#include <boost/spirit/include/qi_parse.hpp>
 
 namespace Irc::Parsers {
  
-    using std::string, std::uint16_t, std::isalpha, std::isalnum; 
+    using std::runtime_error, std::string, std::uint16_t, std::isalpha, std::isalnum; 
     using boost::spirit::qi::uint_parser, boost::spirit::qi::parse;
     using Irc::Models::Message;
 
@@ -270,6 +271,16 @@ namespace Irc::Parsers {
                 return false;   // invalid tag after ';'
 
         return true;
+    }
+
+    Message tryParseMessage(const std::string& input)
+    {
+        Message message;
+
+        if (parseMessage(input, message))
+            return message;
+        else
+            throw runtime_error("Invalid IRC message");
     }
 
     bool parseMessage(const std::string& input, Message& message)
