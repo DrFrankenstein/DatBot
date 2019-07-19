@@ -17,7 +17,7 @@ namespace Irc
         rxcpp::observable<Models::Message> messages();
 
     private:
-        void onMessage(const std::string& message);
+        void onMessage(const Models::Message& message);
 
         Net::AsioDevice& _device;
         rxcpp::subscription _rawMessages;

@@ -22,6 +22,12 @@ namespace Irc
         _messages = _device.messages()
             | map(tryParseMessage);
 
+        _rawMessages = _messages.subscribe(
+            [this](auto message) { onMessage(message); },
+            [this](exception_ptr& ex) {},
+            [this]() {}
+        );
+
         _states = _device.states().subscribe(
             [this](auto message) {},
             [this](exception_ptr& ex) {},
@@ -34,7 +40,7 @@ namespace Irc
         return _messages;
     }
 
-    void Session::onMessage(const string& message)
+    void Session::onMessage(const Message& message)
     {
 
     }
