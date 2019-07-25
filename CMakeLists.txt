@@ -8,6 +8,7 @@ include_directories(${Boost_INCLUDE_DIR})
 set(CMAKE_CXX_STANDARD 17)
 
 add_compile_definitions(_WIN32_WINNT=_WIN32_WINNT_WIN10)
+add_compile_definitions(_WINSOCK_DEPRECATED_NO_WARNINGS=1)
 
 # Workaround until rxcpp gets updated in vcpkg
 # It uses std::unexpected which was removed in C++17
