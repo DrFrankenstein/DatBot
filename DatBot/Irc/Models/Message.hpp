@@ -1,18 +1,33 @@
 #pragma once
 
 #include <cstdint>
+#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <variant>
+#include <vector>
 
 namespace Irc::Models
 {
 struct Message
 {
-	std::unordered_map<std::string, std::string> tags;
+	using Tags    = std::unordered_map<std::string, std::string>;
+	using Command = std::variant<std::uint16_t, std::string>;
+	using Params  = std::vector<std::string>;
+
+	Tags tags;
 	std::string prefix;
-	std::variant<std::uint16_t, std::string> command;
-	std::list<std::string> params;
+	Command command;
+	Params params;
+
+	bool isNumeric() const;
+	bool isCommand() const;
+	bool is(std::uint16_t numeric) const;
+	bool is(const std::string& command) const;
+
+	std::string toString() const;
 };
 
 }
+
+std::ostream& operator<<(std::ostream& out, const Irc::Models::Message& message);
