@@ -20,8 +20,8 @@ AsioDevice::AsioDevice(context& context, const string& host, uint16_t port):
 void AsioDevice::doSendRaw(const string& message)
 {
 	auto sender = [this, message]() {
-		bool writing = _writeQueue.empty();
-		_writeQueue.push(message + '\n');
+		bool writing = !_writeQueue.empty();
+		_writeQueue.push(message + "\r\n");
 		if (!writing)
 			writeNext();
 	};

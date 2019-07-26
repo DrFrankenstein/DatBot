@@ -1,63 +1,27 @@
 #include "Net/AsioDevice.hpp"
 
-#include <algorithm>
-#include <boost/asio.hpp>
-#include <functional>
-#include <iostream>
-#include <rxcpp/rx.hpp>
 #include <string>
+#include <boost/asio.hpp>
+
+#include "Irc/Session.hpp"
 
 namespace asio = boost::asio;
+using Irc::Session;
+using std::string;
 
 namespace Bot
 {
 class IrcBot
 {
 	public:
-	IrcBot(Net::AsioDevice& reader):
-	    _reader(reader)
+	IrcBot(Net::AsioDevice& device, const string& nickname, const string& realname):
+	    _session(device, nickname, realname)
 	{
-		_messagesSub = _reader.messages().subscribe(
-		    [this](auto message) { onMessage(message); },
-		    [this](std::exception_ptr& ex) { onError(ex); },
-		    [this]() { onComplete(); });
-
-		_statesSub = _reader.states().subscribe(
-		    [this](auto state) { onState(state); },
-		    [this](std::exception_ptr& ex) { onError(ex); },
-		    [this]() { onComplete(); });
-
-		reader.connect();
+		device.connect();
 	}
 
 	private:
-	void onState(Net::ConnectionState state)
-	{
-		switch (state)
-		{
-		case Net::ConnectionState::ONLINE:
-			_reader.sendRaw("USER DrFrankTest 0 * :Dr Frankenstein");
-			_reader.sendRaw("NICK DrFrankTest");
-			break;
-		}
-	}
-
-	void onMessage(const std::string& message)
-	{
-		std::cout << "<<< " << message;
-	}
-
-	void onError(std::exception_ptr& ex)
-	{}
-
-	void onComplete()
-	{
-		std::cout << "DONE" << std::endl;
-	}
-
-	Net::AsioDevice& _reader;
-	rxcpp::subscription _messagesSub;
-	rxcpp::subscription _statesSub;
+	Session _session;
 };
 }
 
@@ -65,7 +29,7 @@ int main()
 {
 	asio::io_context io;
 	Net::AsioDevice tcpreader(io, "irc.snoonet.org", 6667);
-	Bot::IrcBot bot(tcpreader);
+	Bot::IrcBot bot(tcpreader, "DrFrankTest", "DatBot Test User");
 
 	io.run();
 }

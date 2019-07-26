@@ -15,10 +15,10 @@ struct Message
 	using Command = std::variant<std::uint16_t, std::string>;
 	using Params  = std::vector<std::string>;
 
-	Tags tags;
-	std::string prefix;
 	Command command;
 	Params params;
+	std::string prefix;
+	Tags tags;
 
 	bool isNumeric() const;
 	bool isCommand() const;
