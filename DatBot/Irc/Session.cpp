@@ -19,6 +19,10 @@ using std::cout, std::endl, std::exception_ptr, std::string;
 Session::Session(AsioDevice& device, const string& nickname, const string& realname):
     _device(device), _nickname(nickname), _realname(realname)
 {
+	// for for debugging purposes
+	(void) _subscriptions.add(_device.messages().subscribe(
+	    [this](auto message) { cout << "<<< " << message; }));
+
 	_messages = _device.messages()
 	    | map(tryParseMessage);
 
@@ -82,8 +86,6 @@ void Session::realname(const string& newname)
 
 void Session::onMessage(const Message& message)
 {
-	// for debugging purposes
-	cout << "<<< " << message << endl;
 }
 
 void Session::onState(ConnectionState state)
