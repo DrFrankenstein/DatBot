@@ -70,12 +70,13 @@ void renderTags(ostream& out, Message::Tags tags)
 
 	for (auto& [key, value] : tags)
 		renderTag(out, key, value);
+	
+	out << ' ';
 }
 
 void renderPrefix(ostream& out, const string& prefix)
 {
-	out << ':';
-	out << prefix;
+	out << ':' << prefix << ' ';
 }
 
 void renderCommand(ostream& out, Message::Command command)
