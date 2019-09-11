@@ -16,4 +16,12 @@ add_compile_definitions(_WINSOCK_DEPRECATED_NO_WARNINGS=1)
 # It uses std::unexpected which was removed in C++17
 add_compile_definitions(_HAS_UNEXPECTED=1)
 
+# Workaround until yaml-cpp becomes C++17 compliant
+add_compile_definitions(_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING=1)
+
+if (MSVC)
+	# yaml-cpp headers generate a lot of those warnings, and they don't seem to matter at this point
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4251 /wd4275 ")
+endif ()
+
 add_subdirectory ("DatBot")

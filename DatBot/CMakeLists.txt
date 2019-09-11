@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 3.8)
 
 add_executable (DatBot 
     "DatBot.cpp" 
+	"Bot/IrcBot.cpp"
     "Net/AsioDevice.cpp" 
     "Irc/Session.cpp"
     "Irc/Models/Message.cpp"
