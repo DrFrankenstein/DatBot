@@ -1,4 +1,4 @@
-﻿cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.8)
 
 add_executable (DatBot 
     "DatBot.cpp" 
@@ -7,3 +7,8 @@ add_executable (DatBot
     "Irc/Models/Message.cpp"
     "Irc/Parsers/MessageParser.cpp"
 )
+
+target_link_libraries(DatBot PRIVATE yaml-cpp)
+
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/datbot.conf"
+        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
