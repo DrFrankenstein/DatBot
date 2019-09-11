@@ -9,6 +9,7 @@ add_executable (DatBot
     "Irc/Parsers/MessageParser.cpp"
 )
 
+target_link_libraries(DatBot PRIVATE Boost::program_options)
 target_link_libraries(DatBot PRIVATE yaml-cpp)
 
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/datbot.conf"
