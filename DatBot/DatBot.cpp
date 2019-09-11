@@ -49,6 +49,7 @@ class IrcBot
 			if (!channels.IsSequence())
 				throw runtime_error { "config: 'channels' is malformed" };
 
+			_channels.reserve(channels.size());
 			transform(channels, back_inserter(_channels), [](auto channelnode) { return channelnode.as<string>(); });
 		}
 
