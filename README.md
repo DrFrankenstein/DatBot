@@ -30,7 +30,7 @@ You'll need
 * CMake 3.8 or better
 * Boost 1.69 or better
 * RxCpp 4.0 or better
-* yaml-coo 0.6.0 or better
+* yaml-cpp 0.6.0 or better
 
 You can use whatever dev environment that supports CMake (or the other way around, whatever semantics you prefer). Popular ones are
 Visual Studio, VS Code, CLion, Qt Creator, Eclipse, X-Code... or just good ol' vim amd make, in which case `cmake && make` should
