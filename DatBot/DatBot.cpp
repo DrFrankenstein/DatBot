@@ -16,7 +16,13 @@ using YAML::Node;
 po::variables_map parseOptions(int argc, char* argv[])
 {
 	po::options_description mainOptions { "Main options" };
-	mainOptions.add_options()("help,?", "print this help")("config-file,f", po::value<string>()->default_value("datbot.conf"), "set config file path");
+
+	// clang-format off
+	mainOptions.add_options()
+		("help,?",                                                           "print this help")
+		("config-file,f", po::value<string>()->default_value("datbot.conf"), "set config file path")
+	;
+	// clang-format on
 
 	po::variables_map options;
 	po::store(po::parse_command_line(argc, argv, mainOptions), options);
