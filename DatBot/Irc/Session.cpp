@@ -44,6 +44,11 @@ Session::Session(AsioDevice& device, const string& nickname, const string& realn
 	    [this]() {}));
 }
 
+void Session::start()
+{
+	_device.connect();
+}
+
 rxcpp::observable<Message> Session::messages()
 {
 	return _messages;

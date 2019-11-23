@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../Net/AsioDevice.hpp"
 #include "../Irc/Session.hpp"
 
@@ -12,6 +14,8 @@ class IrcBot
 	public:
 	IrcBot(Net::AsioDevice& device, const std::string& nickname, const std::string& realname);
 	IrcBot(Net::AsioDevice& device, const YAML::Node& configroot);
+
+	void start();
 
 	private:
 	void readConfig(const YAML::Node& configroot);

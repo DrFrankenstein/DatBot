@@ -1,4 +1,5 @@
 #include "IrcBot.hpp"
+#include "Config.hpp"
 #include "../Net/AsioDevice.hpp"
 #include "../Irc/Session.hpp"
 
@@ -18,36 +19,23 @@ namespace Bot
 IrcBot::IrcBot(AsioDevice& device, const string& nickname, const string& realname):
     _session(device, nickname, realname)
 {
-	device.connect();
 }
+
 IrcBot::IrcBot(Net::AsioDevice& device, const Node& configroot):
     _session(device, "Unconfigured", "Unconfigured")
 {
 	readConfig(configroot);
 }
 
+void IrcBot::start()
+{
+	_session.start();
+}
+
 void IrcBot::readConfig(const Node& configroot)
 {
-	auto nick = configroot["nick"];
-	if (!nick || !nick.IsScalar())
-		throw runtime_error { "config: 'nick' is required and must be a string" };
-
-	_session.nickname(nick.as<string>());
-
-	auto channels = configroot["channels"];
-	if (channels)
-	{
-		if (!channels.IsSequence())
-			throw runtime_error { "config: 'channels' is malformed" };
-
-		_channels.reserve(channels.size());
-		transform(channels, back_inserter(_channels), [](auto channelnode) { return channelnode.as<string>(); });
-	}
-
-	auto trigger = configroot["trigger"];
-	if (trigger)
-		_trigger = trigger.as<string>();
-	else
-		_trigger = "!";
+	_session.nickname(Config::expectScalar<string>(configroot, "nick"));
+	Config::getSequence<string>(configroot, "channels", back_inserter(_channels));
+	_trigger = Config::defaultScalar<string>(configroot, "trigger", "!");
 }
 }

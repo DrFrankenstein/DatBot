@@ -48,5 +48,6 @@ int main(int argc, char* argv[])
 	Net::AsioDevice tcpreader(io, "irc.snoonet.org", 6667);
 	Bot::IrcBot bot(tcpreader, config);
 
+	bot.start();
 	io.run();
 }

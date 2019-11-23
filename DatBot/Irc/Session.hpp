@@ -14,6 +14,8 @@ class Session
 	public:
 	Session(Net::AsioDevice& device, const std::string& nickname, const std::string& realname);
 
+	void start();
+
 	rxcpp::observable<Models::Message> messages();
 	void send(const Models::Message& message);
 
