@@ -1,0 +1,23 @@
+name: Build DatBot
+on: [push]
+
+jobs:
+	build:
+		runs-on: ${{matrix.os}}
+		strategy:
+			matrix:
+				os: [windows-latest, ubuntu-latest, macOS-latest]
+
+		steps:
+		- uses: action/checkout
+
+		- name: Create Build Environment
+		  run: cmake -E make_directory ${{runner.workspace}}/build
+
+		- name: Configure
+		  working-directory: ${{runner.workspace}}/build
+		  run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release
+
+		- name: Make
+		  working-directory: ${{runner.workspace}}/build
+		  run: cmake --build . --config Release
