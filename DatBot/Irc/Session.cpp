@@ -13,13 +13,13 @@ namespace Irc
 using Models::Message;
 using Net::AsioDevice, Net::ConnectionState;
 using Parsers::tryParseMessage;
-using rxcpp::operators::map, rxcpp::operators::filter, rxcpp::operators::subscribe;
+using rxcpp::operators::map, rxcpp::operators::filter;
 using std::cout, std::endl, std::exception_ptr, std::string;
 
 Session::Session(AsioDevice& device, const string& nickname, const string& realname):
-    _device(device), _nickname(nickname), _realname(realname)
+    _device(device), _nickname(nickname), _realname(realname), _channels(*this)
 {
-	// for for debugging purposes
+	// for debugging purposes
 	(void) _subscriptions.add(_device.messages().subscribe(
 	    [this](auto message) { cout << "<<< " << message; }));
 

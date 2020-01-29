@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Net/AsioDevice.hpp"
+#include "ChannelManager.hpp"
 #include "Models/Message.hpp"
 
 #include <exception>
@@ -40,5 +41,7 @@ class Session
 	rxcpp::composite_subscription _subscriptions;
 
 	rxcpp::observable<Models::Message> _messages;
+
+	ChannelManager _channels;
 };
 }
