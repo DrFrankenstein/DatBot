@@ -11,11 +11,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: What is the OS
-      run: echo ${{ runner.os }}
-
-    - name: Set up Ubuntu
-      if: startsWith(runner.os, 'ubuntu')
+#    - name: What is the OS
+#      run: echo ${{ runner.os }}
+#
+    - name: Set up Linux
+      if: runner.os == 'Linux'
       run: sudo apt install libboost-program-options-dev
 
     - name: Create Build Environment
