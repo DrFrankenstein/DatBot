@@ -11,6 +11,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: What is the OS
+      run: echo ${{ runner.os }}
+
     - name: Set up Ubuntu
       if: startsWith(runner.os, 'ubuntu')
       run: sudo apt install libboost-program-options-dev
