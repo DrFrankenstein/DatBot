@@ -16,7 +16,7 @@ jobs:
 #
     - name: Set up Linux
       if: runner.os == 'Linux'
-      run: sudo apt install libboost-program-options-dev
+      run: sudo apt install libboost-program-options-dev libyaml-cpp-dev
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
