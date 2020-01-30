@@ -11,6 +11,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+	- name: Set up Ubuntu
+	  if: starts_with(runner.os, 'ubuntu')
+	  run: sudo apt install libboost-program-options-dev
+
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
 
