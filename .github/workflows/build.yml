@@ -16,6 +16,9 @@ jobs:
       if: runner.os != 'Windows'
       run: which vcpkg
 
+    - name: What are the variables?
+      run: set
+
     - name: Set up Linux
       if: runner.os == 'Linux'
       run: |
