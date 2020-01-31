@@ -13,8 +13,8 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Where is vcpkg?
-	  if: runner.os != 'Windows'
-	  run: which vcpkg
+      if: runner.os != 'Windows'
+      run: which vcpkg
 
     - name: Set up Linux
       if: runner.os == 'Linux'
