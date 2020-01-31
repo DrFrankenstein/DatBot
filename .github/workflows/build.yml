@@ -12,9 +12,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-#    - name: What is the OS
-#      run: echo ${{ runner.os }}
-#
+    - name: Where is vcpkg?
+	  if: runner.os != 'Windows'
+	  run: which vcpkg
+
     - name: Set up Linux
       if: runner.os == 'Linux'
       run: |
