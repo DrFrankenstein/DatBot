@@ -6,7 +6,8 @@ find_package(Boost 1.69.0 REQUIRED COMPONENTS program_options)
 include_directories(${Boost_INCLUDE_DIR})
 
 find_package(rxcpp CONFIG REQUIRED)
-include_directories(${rxcpp_INCLUDE_DIR})
+find_path(rxcpp_INCLUDE_DIR NAMES rx.hpp)
+include_directories(${rxcpp_INCLUDE_DIR}/..)
 
 find_package(yaml-cpp CONFIG REQUIRED)
 
