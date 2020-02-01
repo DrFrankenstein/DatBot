@@ -13,13 +13,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Where is vcpkg?
-      if: runner.os != 'Windows'
-      run: which vcpkg
-
-    - name: What are the variables?
-      run: set
-
     - name: Set up Windows
       if: runner.is == 'Windows'
       run: vcpkg install boost boost-program-options rxcpp yaml-cpp
