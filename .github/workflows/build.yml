@@ -8,6 +8,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest, macOS-latest]
+        cxx: [g++, clang++]
 
     steps:
     - uses: actions/checkout@v2
@@ -18,6 +19,10 @@ jobs:
 
     - name: What are the variables?
       run: set
+
+    - name: Set up Windows
+      if: runner.is == 'Windows'
+	  run: vcpkg install boost boost-program-options rxcpp yaml-cpp
 
     - name: Set up Linux
       if: runner.os == 'Linux'
@@ -30,7 +35,7 @@ jobs:
 
     - name: Configure
       working-directory: ${{runner.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake -DCMAKE_CXX_COMPILER=${{matrix.cxx}}
 
     - name: Make
       working-directory: ${{runner.workspace}}/build
