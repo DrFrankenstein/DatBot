@@ -26,8 +26,9 @@ jobs:
       run: cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Configure
+      shell: bash
       working-directory: ${{runner.workspace}}/build
-      run: cmake ${{runner.workspace}}/DatBot -DCMAKE_BUILD_TYPE=Release #-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake
+      run: cmake ${{runner.workspace}}/DatBot -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake
 
     - name: Make
       working-directory: ${{runner.workspace}}/build
