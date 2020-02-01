@@ -7,14 +7,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest, macOS-lates]
+        os: [windows-latest, ubuntu-latest, macOS-latest]
 
     steps:
     - uses: actions/checkout@v2
 
     - name: Set up Windows
       if: runner.os == 'Windows'
-      run: vcpkg install boost boost-program-options rxcpp yaml-cpp
+      run: vcpkg install rxcpp yaml-cpp
 
     - name: Set up Linux
       if: runner.os == 'Linux'
