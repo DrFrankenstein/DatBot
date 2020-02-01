@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Set up Windows
-      if: runner.is == 'Windows'
+      if: runner.os == 'Windows'
       run: vcpkg install boost boost-program-options rxcpp yaml-cpp
 
     - name: Set up Linux
