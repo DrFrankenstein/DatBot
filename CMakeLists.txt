@@ -5,7 +5,7 @@ project ("DatBot")
 find_package(Boost 1.69.0 REQUIRED COMPONENTS program_options)
 include_directories(${Boost_INCLUDE_DIR})
 
-find_package(rxcpp 4 REQUIRED)
+find_package(rxcpp 2.2.4 REQUIRED)	# we actually require 4.x but the vcpkg package has a bad version file
 # find_path(rxcpp_INCLUDE_DIR NAMES rx.hpp)
 include_directories(${rxcpp_INCLUDE_DIR}/..)
 
