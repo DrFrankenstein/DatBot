@@ -25,8 +25,8 @@ jobs:
     - name: Set up macOS
       if: runner.os == 'macOS'
       run: |
-        sudo brew install boost yaml-cpp
-        sudo vcpkg install rxcpp
+        brew install boost yaml-cpp
+        vcpkg install rxcpp
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
