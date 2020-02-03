@@ -28,7 +28,7 @@ Result expectScalar(YAML::Node node, Key key)
 }
 
 template<typename Result, typename Key>
-Result defaultScalar(YAML::Node node, Key key, Result default)
+Result defaultScalar(YAML::Node node, Key key, Result defaultval)
 {
 	using boost::format, boost::str;
 	using std::runtime_error;
