@@ -37,7 +37,7 @@ Result defaultScalar(YAML::Node node, Key key, Result defaultval)
 	Node item = node[key];
 
 	if (!item)
-		return default;
+		return defaultval;
 
 	if (!item.IsScalar())
 		throw runtime_error { str(format("config: parameter %1% is not a single value") % key) };
