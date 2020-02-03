@@ -28,7 +28,7 @@ jobs:
         brew install boost yaml-cpp
         git clone --depth=1 "https://github.com/ReactiveX/RxCpp.git"
         cmake -E make_directory RxCppBuild
-        cmake -E chdir RxCppBuild
+        cd RxCppBuild
         cmake ../RxCpp
         sudo make install
 
