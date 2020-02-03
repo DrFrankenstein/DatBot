@@ -26,7 +26,11 @@ jobs:
       if: runner.os == 'macOS'
       run: |
         brew install boost yaml-cpp
-        vcpkg install rxcpp
+        git clone --depth=1 "https://github.com/ReactiveX/RxCpp.git"
+        cmake -E make_directory RxCppBuild
+        cmake -E chdir RxCppBuild
+        cmake ../RxCpp
+        sudo make install
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
