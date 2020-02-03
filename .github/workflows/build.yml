@@ -22,6 +22,12 @@ jobs:
         sudo apt install libboost-dev libboost-program-options-dev
         sudo vcpkg install rxcpp yaml-cpp
 
+    - name: Set up macOS
+      if: runner.os == 'macOS'
+      run: |
+        sudo brew install boost yaml-cpp
+        sudo vcpkg install rxcpp
+
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
 
