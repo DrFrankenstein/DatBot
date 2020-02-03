@@ -10,6 +10,8 @@ find_package(rxcpp REQUIRED)
 find_package(yaml-cpp REQUIRED)
 include_directories(${YAML_CPP_INCLUDE_DIR})
 
+find_package(Threads REQUIRED)
+
 set(CMAKE_CXX_STANDARD 17)
 
 add_compile_definitions(_WIN32_WINNT=_WIN32_WINNT_WIN10)
