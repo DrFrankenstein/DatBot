@@ -14,7 +14,7 @@ jobs:
 
     - name: Set up Windows
       if: runner.os == 'Windows'
-      run: vcpkg install rxcpp yaml-cpp
+      run: vcpkg install rxcpp rxcpp:x64-windows yaml-cpp yaml-cpp:x64-windows
 
     - name: Set up Linux
       if: runner.os == 'Linux'
