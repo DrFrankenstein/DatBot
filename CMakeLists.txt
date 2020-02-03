@@ -6,12 +6,9 @@ find_package(Boost 1.69.0 REQUIRED COMPONENTS program_options)
 include_directories(${Boost_INCLUDE_DIR})
 
 find_package(rxcpp REQUIRED)
-find_path(rxcpp_INCLUDE_DIR NAMES rx.hpp)
-message("rxcpp include dir:")
-message("${rxcpp_INCLUDE_DIR}")
-include_directories(${rxcpp_INCLUDE_DIR}/..)
 
 find_package(yaml-cpp REQUIRED)
+include_directories(${YAML_CPP_INCLUDE_DIR})
 
 set(CMAKE_CXX_STANDARD 17)
 

@@ -19,7 +19,7 @@ jobs:
     - name: Set up Linux
       if: runner.os == 'Linux'
       run: |
-        sudo apt install libboost-program-options-dev
+        sudo apt install libboost-dev libboost-program-options-dev
         sudo vcpkg install rxcpp yaml-cpp
 
     - name: Create Build Environment
