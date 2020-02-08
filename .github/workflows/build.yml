@@ -41,7 +41,9 @@ jobs:
     - name: Configure
       shell: bash
       working-directory: ${{runner.workspace}}/build
-      run: cmake ../DatBot -DCMAKE_BUILD_TYPE=Release $CMAKE_FLAGS
+      run: |
+        set
+        cmake ../DatBot -DCMAKE_BUILD_TYPE=Release $CMAKE_FLAGS
 
     - name: Make
       working-directory: ${{runner.workspace}}/build
