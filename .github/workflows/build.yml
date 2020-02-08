@@ -16,7 +16,7 @@ jobs:
       if: runner.os == 'Windows'
       run: | 
         vcpkg install rxcpp rxcpp:x64-windows yaml-cpp yaml-cpp:x64-windows
-        echo '::set-env name=CMAKE_FLAGS::"-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"'
+        echo '::set-env name=CMAKE_FLAGS::"-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT\scripts\buildsystems\vcpkg.cmake"'
 
     - name: Set up Linux
       if: runner.os == 'Linux'
@@ -39,7 +39,6 @@ jobs:
       run: cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Configure
-      shell: bash
       working-directory: ${{runner.workspace}}/build
       run: cmake ../DatBot -DCMAKE_BUILD_TYPE=Release $CMAKE_FLAGS
 
