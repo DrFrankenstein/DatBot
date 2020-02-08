@@ -14,13 +14,16 @@ jobs:
 
     - name: Set up Windows
       if: runner.os == 'Windows'
-      run: vcpkg install rxcpp rxcpp:x64-windows yaml-cpp yaml-cpp:x64-windows
+      run: | 
+        vcpkg install rxcpp rxcpp:x64-windows yaml-cpp yaml-cpp:x64-windows
+        set CMAKE_FLAGS=-DCMAKE_TOOLCHAIN_FILE=%VCPKG_INSTALLATION_ROOT%/scripts/buildsystems/vcpkg.cmake
 
     - name: Set up Linux
       if: runner.os == 'Linux'
       run: |
         sudo apt install libboost-dev libboost-program-options-dev
         sudo vcpkg install rxcpp yaml-cpp
+        export CMAKE_FLAGS=-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT
 
     - name: Set up macOS
       if: runner.os == 'macOS'
@@ -38,7 +41,7 @@ jobs:
     - name: Configure
       shell: bash
       working-directory: ${{runner.workspace}}/build
-      run: cmake ../DatBot -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake
+      run: cmake ../DatBot -DCMAKE_BUILD_TYPE=Release $CMAKE_FLAGS
 
     - name: Make
       working-directory: ${{runner.workspace}}/build
