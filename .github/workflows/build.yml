@@ -48,9 +48,9 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . -v --config Release
 
-	- name: Pack
-	  working-directory: ${{runner.workspace}}/build
-	  run: cpack -G TGZ -P DatBot
+    - name: Pack
+      working-directory: ${{runner.workspace}}/build
+      run: cpack -G TGZ -P DatBot
 
     - uses: actions/upload-artifact@v1
       with:
