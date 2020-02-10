@@ -30,3 +30,16 @@ if (MSVC)
 endif ()
 
 add_subdirectory ("DatBot")
+
+install(TARGETS "DatBot")
+
+set(CPACK_PACKAGE_NAME "DatBot")
+set(CPACK_PACKAGE_VENDOR "DrFrankenstein")
+set(CPACK_PACKAGE_VERSION_MAJOR "0")
+set(CPACK_PACKAGE_VERSION_MINOR "1")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(CPACK_PACKAGE_DESCRIPTION "An IRC bot in development")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "An IRC bot in development")
+set(CPACK_PACKAGE_HOMEPAGE_URL "http://github.com/DrFrankenstein/DatBot/")
+
+include(CPack)
