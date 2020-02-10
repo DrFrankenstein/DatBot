@@ -42,10 +42,18 @@ jobs:
     - name: Configure
       shell: bash
       working-directory: ${{runner.workspace}}/build
-      run: |
-        echo cmake ../DatBot -DCMAKE_BUILD_TYPE=Release $CMAKE_FLAGS
-        cmake ../DatBot -DCMAKE_BUILD_TYPE=Release $CMAKE_FLAGS
+      run: cmake ../DatBot -DCMAKE_BUILD_TYPE=Release $CMAKE_FLAGS
 
     - name: Make
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . -v --config Release
+
+    - name: Pack
+      if: runner.os == 'Linux' || runner.os == 'macOS'
+      working-directory: ${{runner.workspace}}/build
+      run: 7za a -tgzip DatBot.tar.gz ./
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: DatBot
+        path: ${{runner.workspace}}/build/DatBot.tar.gz
