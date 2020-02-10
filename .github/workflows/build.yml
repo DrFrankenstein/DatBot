@@ -29,7 +29,7 @@ jobs:
     - name: Set up macOS
       if: runner.os == 'macOS'
       run: |
-        brew install boost yaml-cpp
+        brew install boost yaml-cpp p7zip
         git clone --depth=1 "https://github.com/ReactiveX/RxCpp.git"
         cmake -E make_directory RxCppBuild
         cd RxCppBuild
@@ -49,9 +49,8 @@ jobs:
       run: cmake --build . -v --config Release
 
     - name: Pack
-      if: runner.os == 'Linux' || runner.os == 'macOS'
       working-directory: ${{runner.workspace}}/build
-      run: 7za a -tgzip DatBot.tar.gz ./
+      run: 7za a -tgzip DatBot.tar.gz .
 
     - uses: actions/upload-artifact@v1
       with:
