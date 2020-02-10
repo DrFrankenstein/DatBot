@@ -16,7 +16,7 @@ jobs:
       if: runner.os == 'Windows'
       shell: bash
       run: | 
-        vcpkg install rxcpp rxcpp:x64-windows yaml-cpp yaml-cpp:x64-windows
+        vcpkg install rxcpp yaml-cpp
         echo ::set-env name=CMAKE_FLAGS::"-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
 
     - name: Set up Linux
@@ -48,11 +48,11 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . -v --config Release
 
-    - name: Pack
-      working-directory: ${{runner.workspace}}/build
-      run: cpack -G TGZ -P DatBot
+    #- name: Pack
+    #  working-directory: ${{runner.workspace}}/build
+    #  run: cpack -G TGZ
 
     - uses: actions/upload-artifact@v1
       with:
         name: DatBot
-        path: ${{runner.workspace}}/build/DatBot.tar.gz
+        path: ${{runner.workspace}}/build/DatBot/Release
