@@ -1,3 +1,5 @@
+![Build DatBot](https://github.com/DrFrankenstein/DatBot/workflows/Build%20DatBot/badge.svg)
+
 # Hello!
 
 You are looking at DatBot, yet another IRC bot for doing things that IRC bots do.
