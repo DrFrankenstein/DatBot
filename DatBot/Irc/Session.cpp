@@ -5,7 +5,7 @@
 
 #include <exception>
 #include <iostream>
-#include <rxcpp/rx.hpp>
+#include <rx.hpp>
 #include <string>
 
 namespace Irc

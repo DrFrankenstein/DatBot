@@ -2,7 +2,7 @@
 
 #include <cstdint>
 #include <exception>
-#include <rxcpp/rx.hpp>
+#include <rx.hpp>
 #include <string>
 
 namespace Net

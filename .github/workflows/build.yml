@@ -1,0 +1,62 @@
+name: Build DatBot
+on: [push]
+
+jobs:
+  build:
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macOS-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Windows
+      if: runner.os == 'Windows'
+      shell: bash
+      run: | 
+        vcpkg install rxcpp rxcpp:x64-windows yaml-cpp yaml-cpp:x64-windows
+        echo ::set-env name=CMAKE_FLAGS::"-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+
+    - name: Set up Linux
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt install libboost-dev libboost-program-options-dev
+        sudo vcpkg install rxcpp yaml-cpp
+        echo ::set-env name=CMAKE_FLAGS::"-DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+
+    - name: Set up macOS
+      if: runner.os == 'macOS'
+      run: |
+        brew install boost yaml-cpp
+        git clone --depth=1 "https://github.com/ReactiveX/RxCpp.git"
+        cmake -E make_directory RxCppBuild
+        cd RxCppBuild
+        cmake ../RxCpp
+        sudo make install
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{runner.workspace}}/build
+
+    - name: Configure
+      shell: bash
+      working-directory: ${{runner.workspace}}/build
+      run: cmake ../DatBot -DCMAKE_BUILD_TYPE=Release $CMAKE_FLAGS -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+    #- name: Lint
+    #  working-directory: ${{runner.workspace}}/build
+    #  run: clang-tidy -p . ../*.cpp
+
+    - name: Make
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build . -v --config Release
+
+    #- name: Pack
+    #  working-directory: ${{runner.workspace}}/build
+    #  run: cpack -G TGZ
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: DatBot-${{runner.os}}
+        path: ${{runner.workspace}}/build/DatBot
