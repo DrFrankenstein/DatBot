@@ -5,7 +5,7 @@
 #include "Models/Message.hpp"
 
 #include <exception>
-#include <rxcpp/rx.hpp>
+#include <rx.hpp>
 #include <string>
 
 namespace Irc

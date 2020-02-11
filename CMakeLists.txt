@@ -5,7 +5,12 @@ project ("DatBot")
 find_package(Boost 1.69.0 REQUIRED COMPONENTS program_options)
 include_directories(${Boost_INCLUDE_DIR})
 
-find_package(yaml-cpp CONFIG REQUIRED)
+find_package(rxcpp REQUIRED)
+
+find_package(yaml-cpp REQUIRED)
+include_directories(${YAML_CPP_INCLUDE_DIR})
+
+find_package(Threads REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -25,3 +30,16 @@ if (MSVC)
 endif ()
 
 add_subdirectory ("DatBot")
+
+install(TARGETS "DatBot")
+
+set(CPACK_PACKAGE_NAME "DatBot")
+set(CPACK_PACKAGE_VENDOR "DrFrankenstein")
+set(CPACK_PACKAGE_VERSION_MAJOR "0")
+set(CPACK_PACKAGE_VERSION_MINOR "1")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(CPACK_PACKAGE_DESCRIPTION "An IRC bot in development")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "An IRC bot in development")
+set(CPACK_PACKAGE_HOMEPAGE_URL "http://github.com/DrFrankenstein/DatBot/")
+
+include(CPack)
