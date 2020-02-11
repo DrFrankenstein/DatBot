@@ -44,9 +44,9 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       run: cmake ../DatBot -DCMAKE_BUILD_TYPE=Release $CMAKE_FLAGS -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-    - name: Lint
-      working-directory: ${{runner.workspace}}/build
-      run: clang-tidy -p . ../*.cpp
+    #- name: Lint
+    #  working-directory: ${{runner.workspace}}/build
+    #  run: clang-tidy -p . ../*.cpp
 
     - name: Make
       working-directory: ${{runner.workspace}}/build
