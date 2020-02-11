@@ -38,6 +38,4 @@ You can use whatever dev environment that supports CMake (or the other way aroun
 Visual Studio, VS Code, CLion, Qt Creator, Eclipse, X-Code... or just good ol' vim amd make, in which case `cmake && make` should
 get stuff going.
 
-There's currently no CI set up, so my apologies if things get broken on GCC and clang. Do some investigation, and file an issue,
-or even better, a PR with a fix. Hopefully it's just the aforementioned version numbers not being accurate anymore. Later on, I'll
-get CI going. When I get around to it™.
+If you're having trouble building, look at [our CI script](.github/workflows/build.yml) for inspiration, especially the setup scripts.
