@@ -13,7 +13,7 @@ namespace Irc
 class Session
 {
 	public:
-	Session(Net::AsioDevice& device, const std::string& nickname, const std::string& realname);
+	Session(Net::AsioDevice& device, std::string nickname, std::string realname);
 
 	void start();
 

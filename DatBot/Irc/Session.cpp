@@ -7,6 +7,7 @@
 #include <iostream>
 #include <rx.hpp>
 #include <string>
+#include <utility>
 
 namespace Irc
 {
@@ -14,10 +15,10 @@ using Models::Message;
 using Net::AsioDevice, Net::ConnectionState;
 using Parsers::tryParseMessage;
 using rxcpp::operators::map, rxcpp::operators::filter;
-using std::cout, std::endl, std::exception_ptr, std::string;
+using std::cout, std::endl, std::exception_ptr, std::move, std::string;
 
-Session::Session(AsioDevice& device, const string& nickname, const string& realname):
-    _device(device), _nickname(nickname), _realname(realname), _channels(*this)
+Session::Session(AsioDevice& device, string nickname, string realname):
+    _nickname(move(nickname)), _realname(move(realname)), _device(device), _channels(*this)
 {
 	// for debugging purposes
 	_debugSubscription = _device.messages().subscribe(
@@ -105,6 +106,8 @@ void Session::onState(ConnectionState state)
 		send({ "NICK", { _nickname } });
 		send({ "USER", { _nickname, "2", "*", _realname } });
 		break;
+	case ConnectionState::OFFLINE:
+		;  // nothing for now
 	}
 }
 

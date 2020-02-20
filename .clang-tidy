@@ -1,1 +1,1 @@
-Checks:	"boost-*,bugprone-*,cppcoreguidelines-*,clang-analyzer-*,modernize-*,misc-*,performance-*,portability-*,readability-*"
+Checks:	"boost-*,bugprone-*,cppcoreguidelines-*,clang-analyzer-*,modernize-*,misc-*,performance-*,portability-*,readability-*,-modernize-use-trailing-return-type"
