@@ -36,9 +36,11 @@ class Session
 	std::string _realname;
 
 	Net::AsioDevice& _device;
-	rxcpp::subscription _messagesSub;
-	rxcpp::subscription _states;
-	rxcpp::composite_subscription _subscriptions;
+
+	rxcpp::composite_subscription _messagesSubscription;
+	rxcpp::composite_subscription _statesSubscription;
+	rxcpp::composite_subscription _debugSubscription;
+	rxcpp::composite_subscription _pingsSubscription;
 
 	rxcpp::observable<Models::Message> _messages;
 

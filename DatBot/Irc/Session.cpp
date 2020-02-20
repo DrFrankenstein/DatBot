@@ -20,28 +20,32 @@ Session::Session(AsioDevice& device, const string& nickname, const string& realn
     _device(device), _nickname(nickname), _realname(realname), _channels(*this)
 {
 	// for debugging purposes
-	(void) _subscriptions.add(_device.messages().subscribe(
-	    [this](auto message) { cout << "<<< " << message; }));
+	_debugSubscription = _device.messages().subscribe(
+	    [](auto message) { cout << "<<< " << message; }
+	);
 
 	_messages = _device.messages()
 	    | map(tryParseMessage);
 
-	_messagesSub = _messages.subscribe(
+	_messagesSubscription = _messages.subscribe(
 	    [this](auto message) { onMessage(message); },
-	    [this](exception_ptr& ex) {},
-	    [this]() {});
+	    [](exception_ptr& ex) {},
+	    []() {}
+	);
 
-	_states = _device.states().subscribe(
+	_statesSubscription = _device.states().subscribe(
 	    [this](auto state) { onState(state); },
-	    [this](exception_ptr& ex) {},
-	    [this]() {});
+	    [](exception_ptr& ex) {},
+	    []() {}
+	);
 
 	auto pings = _messages
 	    | filter([](const Message& message) { return message.is("PING"); });
-	(void) _subscriptions.add(pings.subscribe(
+	_pingsSubscription = pings.subscribe(
 	    [this](auto message) { onPing(message); },
-	    [this](exception_ptr& ex) {},
-	    [this]() {}));
+	    [](exception_ptr& ex) {},
+	    []() {}
+	);
 }
 
 void Session::start()
