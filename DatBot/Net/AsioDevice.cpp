@@ -9,8 +9,7 @@
 namespace Net
 {
 using boost::asio::async_connect, boost::asio::async_read_until, boost::asio::async_write, boost::asio::dynamic_buffer,
-    boost::asio::ip::tcp, boost::asio::post;
-using boost::system::error_code;
+    boost::asio::post;
 using std::size_t, std::uint16_t, std::string, std::to_string, std::begin, std::end, std::find;
 
 AsioDevice::AsioDevice(context& context, const string& host, uint16_t port):
@@ -39,7 +38,7 @@ void AsioDevice::doConnect()
 	    [this](auto err, auto endpoint) { onConnect(err, endpoint); });
 }
 
-void AsioDevice::onConnect(const error_code& err, tcp::endpoint&)
+void AsioDevice::onConnect(const error_code& /*err*/, tcp::endpoint& /*endpoint*/)
 {
 	setState(ConnectionState::ONLINE);
 	readNext();
@@ -51,7 +50,7 @@ void AsioDevice::readNext()
 	    [this](auto ec, auto size) { onRead(ec, size); });
 }
 
-void AsioDevice::onRead(const error_code& err, size_t size)
+void AsioDevice::onRead(const error_code& err, size_t /*size*/)
 {
 	if (!err)
 	{
@@ -71,7 +70,7 @@ void AsioDevice::writeNext()
 	    [this](auto err, auto size) { onWrite(err, size); });
 }
 
-void AsioDevice::onWrite(const error_code& err, size_t size)
+void AsioDevice::onWrite(const error_code& err, size_t /*size*/)
 {
 	if (err)
 	{

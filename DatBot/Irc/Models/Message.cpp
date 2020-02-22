@@ -64,7 +64,7 @@ void renderTag(ostream& out, const string& key, const string& value)
 	}
 }
 
-void renderTags(ostream& out, Message::Tags tags)
+void renderTags(ostream& out, const Message::Tags& tags)
 {
 	out << '@';
 
@@ -100,7 +100,7 @@ void renderParam(ostream& out, const string& param)
 	out << param;
 }
 
-void renderParams(ostream& out, Message::Params params)
+void renderParams(ostream& out, const Message::Params& params)
 {
 	for (auto& param : params)
 		renderParam(out, param);

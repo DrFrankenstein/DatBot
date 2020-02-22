@@ -10,8 +10,7 @@
 
 using Net::AsioDevice;
 
-using boost::transform;
-using std::runtime_error, std::string;
+using std::string;
 using YAML::Node;
 
 namespace Bot

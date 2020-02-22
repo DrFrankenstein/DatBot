@@ -13,7 +13,7 @@ namespace po   = boost::program_options;
 using std::cout, std::endl, std::exit, std::string;
 using YAML::Node;
 
-po::variables_map parseOptions(int argc, char* argv[])
+po::variables_map parseOptions(int argc, char** argv)
 {
 	po::options_description mainOptions { "Main options" };
 
@@ -28,7 +28,7 @@ po::variables_map parseOptions(int argc, char* argv[])
 	po::store(po::parse_command_line(argc, argv, mainOptions), options);
 	po::notify(options);
 
-	if (options.count("help"))
+	if (options.count("help") > 0)
 	{
 		cout << mainOptions << endl;
 		exit(0);
@@ -39,13 +39,14 @@ po::variables_map parseOptions(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
+	constexpr ::uint16_t DEFAULT_PORT = 6667;
 	auto options = parseOptions(argc, argv);
 
 	Node config = YAML::LoadFile(options["config-file"].as<string>());
 	std::cout << "config:" << config << std::endl;
 
 	asio::io_context io;
-	Net::AsioDevice tcpreader(io, "irc.snoonet.org", 6667);
+	Net::AsioDevice tcpreader(io, "irc.snoonet.org", DEFAULT_PORT);
 	Bot::IrcBot bot(tcpreader, config);
 
 	bot.start();

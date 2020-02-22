@@ -22,7 +22,7 @@ class AsioDevice : public DeviceBase<AsioDevice>
 	void doConnect();
 
 	private:
-	void onConnect(const error_code& err, tcp::endpoint&);
+	void onConnect(const error_code& err, tcp::endpoint& endpoint);
 
 	void readNext();
 	void onRead(const error_code& err, std::size_t size);
@@ -30,7 +30,7 @@ class AsioDevice : public DeviceBase<AsioDevice>
 	void writeNext();
 	void onWrite(const error_code& err, std::size_t size);
 
-	std::string extractLine(std::string& data);
+	static std::string extractLine(std::string& data);
 
 	context& _context;
 	tcp::socket _socket;

@@ -4,16 +4,16 @@
 
 #include <boost/spirit/include/qi_numeric.hpp>
 #include <boost/spirit/include/qi_parse.hpp>
-#include <cctype>
 #include <cstdint>
 #include <exception>
+#include <locale>
 #include <string>
 
 namespace Irc::Parsers
 {
 using boost::spirit::qi::uint_parser, boost::spirit::qi::parse;
 using Irc::Models::Message;
-using std::runtime_error, std::string, std::uint16_t, std::isalpha, std::isalnum;
+using std::locale, std::runtime_error, std::string, std::uint16_t, std::isalpha, std::isalnum;
 
 using Iterator = string::const_iterator;
 
@@ -22,7 +22,7 @@ std::string escapeTagValue(const string& value)
 	string escaped;
 
 	for (char c : value)
-	{  // <http://ircv3.net/specs/core/message-tags-3.2.html>
+	{	// <http://ircv3.net/specs/core/message-tags-3.2.html>
 		switch (c)
 		{
 		case ';':
@@ -64,7 +64,7 @@ static bool isSpCrLfCl(char c)
 }
 
 static bool parseParam(Iterator& it, const Iterator& end, bool trailing, Message& message)
-{  // [rfc2812]
+{	// [rfc2812]
 	// middle     =  nospcrlfcl *( ":" / nospcrlfcl )
 	// trailing   =  *( ":" / " " / nospcrlfcl )
 
@@ -82,12 +82,13 @@ static bool parseParam(Iterator& it, const Iterator& end, bool trailing, Message
 }
 
 static bool parseParams(Iterator& it, const Iterator& end, Message& message)
-{  // [rfc2812]
+{	// [rfc2812]
 	// params =  *14( SPACE middle ) [ SPACE ":" trailing ]
 	//        =/ 14( SPACE middle ) [ SPACE [ ":" ] trailing ]
 
+	constexpr unsigned char MAX_PARAMS = 15;
 	unsigned char paramCount;
-	for (paramCount = 1; it != end && paramCount < 15; ++paramCount)
+	for (paramCount = 1; it != end && paramCount < MAX_PARAMS; ++paramCount)
 	{
 		if (*it != ' ')
 			break;  // no space, no parameter
@@ -113,12 +114,12 @@ static bool parseParams(Iterator& it, const Iterator& end, Message& message)
 }
 
 static bool parseCommand(Iterator& it, const Iterator& end, Message& message)
-{  // [rfc2812] command =  1*letter / 3digit
+{	// [rfc2812] command =  1*letter / 3digit
 	if (it == end)
 		return false;
 
 	uint16_t numeric;
-	uint_parser<uint16_t, 10, 3, 3> numParser;
+	uint_parser<uint16_t, 10, 3, 3> numParser;  // NOLINT: those ain't magic numbers
 	if (parse(it, end, numParser, numeric))
 	{
 		message.command = numeric;
@@ -126,7 +127,7 @@ static bool parseCommand(Iterator& it, const Iterator& end, Message& message)
 	else
 	{
 		Iterator start = it;
-		while (it != end && isalpha(*it))
+		while (it != end && isalpha(*it, locale::classic()))
 			++it;
 
 		if (it == start)
@@ -213,7 +214,7 @@ static bool parseTagKey(Iterator& it, const Iterator& end, std::string& key)
 	{
 		char c = *it;
 
-		if (c != '-' && !isalnum(c))
+		if (c != '-' && !isalnum(c, locale::classic()))
 		{
 			if (c == '.' || c == ':')
 			{
@@ -278,10 +279,11 @@ Message tryParseMessage(const std::string& input)
 {
 	Message message;
 
-	if (parseMessage(input, message))
-		return message;
-	else
+	if (!parseMessage(input, message))
 		throw runtime_error("Invalid IRC message");
+
+	return message;
+
 }
 
 bool parseMessage(const std::string& input, Message& message)
