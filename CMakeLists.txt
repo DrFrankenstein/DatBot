@@ -27,9 +27,11 @@ add_compile_definitions(_HAS_UNEXPECTED=1)
 add_compile_definitions(_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING=1)
 
 if (MSVC)
-	# yaml-cpp headers generate a lot of those warnings, and they don't seem to matter at this point
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /wd4251 /wd4275 ")
+	# level 4 warnings, no warnings in external headers
+	# /Wall provides nothing useful over /W4, and warns on really insignificant things such as the existence of padding
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /experimental:external /external:anglebrackets /external:W0 ")
 else ()
+	# ALL THE WARNINGS
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic ")
 
 	# Irc::Models::Message is designed to be built with partial initializers
