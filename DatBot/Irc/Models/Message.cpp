@@ -27,10 +27,10 @@ bool Message::is(uint16_t numeric) const
 	    && get<uint16_t>(this->command) == numeric;
 }
 
-bool Message::is(const string& command) const
+bool Message::is(const string& strCommand) const
 {
 	return this->isCommand()
-	    && get<string>(this->command) == command;
+	    && get<string>(this->command) == strCommand;
 }
 
 string Message::toString() const

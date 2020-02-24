@@ -30,13 +30,13 @@ Session::Session(AsioDevice& device, string nickname, string realname):
 
 	_messagesSubscription = _messages.subscribe(
 	    [this](auto message) { onMessage(message); },
-	    [](exception_ptr& ex) {},
+	    [](exception_ptr& /*ex*/) {},
 	    []() {}
 	);
 
 	_statesSubscription = _device.states().subscribe(
 	    [this](auto state) { onState(state); },
-	    [](exception_ptr& ex) {},
+	    [](exception_ptr& /*ex*/) {},
 	    []() {}
 	);
 
@@ -44,7 +44,7 @@ Session::Session(AsioDevice& device, string nickname, string realname):
 	    | filter([](const Message& message) { return message.is("PING"); });
 	_pingsSubscription = pings.subscribe(
 	    [this](auto message) { onPing(message); },
-	    [](exception_ptr& ex) {},
+	    [](exception_ptr& /*ex*/) {},
 	    []() {}
 	);
 }

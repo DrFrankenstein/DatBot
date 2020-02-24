@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.15)
 
 project ("DatBot")
 
@@ -14,8 +14,10 @@ find_package(Threads REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_compile_definitions(_WIN32_WINNT=_WIN32_WINNT_WIN10)
-add_compile_definitions(_WINSOCK_DEPRECATED_NO_WARNINGS=1)
+if (WIN32)
+	add_compile_definitions(_WIN32_WINNT=_WIN32_WINNT_WIN10)
+	add_compile_definitions(_WINSOCK_DEPRECATED_NO_WARNINGS=1)
+endif ()
 
 # Workaround until rxcpp gets updated in vcpkg
 # It uses std::unexpected which was removed in C++17
@@ -26,7 +28,12 @@ add_compile_definitions(_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING=1
 
 if (MSVC)
 	# yaml-cpp headers generate a lot of those warnings, and they don't seem to matter at this point
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4251 /wd4275 ")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /wd4251 /wd4275 ")
+else ()
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic ")
+
+	# Irc::Models::Message is designed to be built with partial initializers
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-missing-field-initializers ")
 endif ()
 
 add_subdirectory ("DatBot")
