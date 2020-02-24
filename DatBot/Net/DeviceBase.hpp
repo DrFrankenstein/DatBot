@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <exception>
 #include <rx.hpp>
 #include <string>
 
@@ -17,29 +16,24 @@ template<class Impl>
 class DeviceBase
 {
 	public:
-	DeviceBase(const std::string& host, const std::uint16_t port):
-	    _host(host), _port(port)
-	{}
+	DeviceBase(const std::string& host, const std::uint16_t port);
 
-	rxcpp::observable<std::string> messages()
-	{
-		return _messages.get_observable();
-	}
-	rxcpp::observable<ConnectionState> states() { return _state.get_observable(); }
+	rxcpp::observable<std::string> messages();
+	rxcpp::observable<ConnectionState> states();
 
-	void connect() { impl().doConnect(); }
+	void connect();
 
-	void sendRaw(const std::string& message) { impl().doSendRaw(message); }
+	void sendRaw(const std::string& message);
 
 	protected:
-	std::string& host() { return _host; }
-	std::uint16_t port() { return _port; }
-	void setState(ConnectionState state) { _state.get_subscriber().on_next(state); }
-	void onMessage(const std::string& message) { _messages.get_subscriber().on_next(message); }
-	void onError() { _messages.get_subscriber().on_error(std::current_exception()); }
+	std::string& host();
+	std::uint16_t port();
+	void setState(ConnectionState state);
+	void onMessage(const std::string& message);
+	void onError();
 
 	private:
-	Impl& impl() { return *static_cast<Impl*>(this); }
+	Impl& impl();
 
 	std::string _host;
 	std::uint16_t _port;
@@ -49,3 +43,5 @@ class DeviceBase
 };
 
 }
+
+#include "DeviceBaseImpl.hpp"
