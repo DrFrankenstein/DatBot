@@ -18,8 +18,8 @@ namespace Irc
 ChannelManager::ChannelManager(Session& session):
     _session(session)
 {
-	_joinsSub = session.messagesOfType("JOIN").subscribe([this](auto& message) { onJoin(message); });
-	_partsSub = session.messagesOfType("PART").subscribe([this](auto& message) { onPart(message); });
+	_joinsSub = session.messagesOfType("JOIN").subscribe([this](auto message) { onJoin(message); });
+	_partsSub = session.messagesOfType("PART").subscribe([this](auto message) { onPart(message); });
 }
 
 observable<Channel> ChannelManager::join(string name)
