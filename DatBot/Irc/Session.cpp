@@ -22,8 +22,7 @@ Session::Session(AsioDevice& device, string nickname, string realname):
 {
 	// for debugging purposes
 	_debugSubscription = _device.messages().subscribe(
-	    [](auto message) { cout << "<<< " << message; }
-	);
+	    [](auto message) { cout << "<<< " << message; });
 
 	_messages = _device.messages()
 	    | map(tryParseMessage);
@@ -31,22 +30,17 @@ Session::Session(AsioDevice& device, string nickname, string realname):
 	_messagesSubscription = _messages.subscribe(
 	    [this](auto message) { onMessage(message); },
 	    [](exception_ptr& /*ex*/) {},
-	    []() {}
-	);
+	    []() {});
 
 	_statesSubscription = _device.states().subscribe(
 	    [this](auto state) { onState(state); },
 	    [](exception_ptr& /*ex*/) {},
-	    []() {}
-	);
+	    []() {});
 
-	auto pings = _messages
-	    | filter([](const Message& message) { return message.is("PING"); });
-	_pingsSubscription = pings.subscribe(
-	    [this](auto message) { onPing(message); },
-	    [](exception_ptr& /*ex*/) {},
-	    []() {}
-	);
+	_pingsSubscription = messagesOfType("PING").subscribe(
+	        [this](auto message) { onPing(message); },
+	        [](exception_ptr& /*ex*/) {},
+	        []() {});
 }
 
 void Session::start()
@@ -57,6 +51,14 @@ void Session::start()
 rxcpp::observable<Message> Session::messages()
 {
 	return _messages;
+}
+
+rxcpp::observable<Message> Session::messagesOfType(const Message::Command& command)
+{
+	// TODO: this function exists so that we can have a central lookup map to dispatch
+	// messages instead of a bunch of duplicate filters to run through. but consider this
+	// a stub for now.
+	return _messages | filter([&](const Message& message) { return message.command == command; });
 }
 
 void Session::send(const Message& message)
@@ -106,8 +108,7 @@ void Session::onState(ConnectionState state)
 		send({ "NICK", { _nickname } });
 		send({ "USER", { _nickname, "2", "*", _realname } });
 		break;
-	case ConnectionState::OFFLINE:
-		;  // nothing for now
+	case ConnectionState::OFFLINE:;  // nothing for now
 	}
 }
 

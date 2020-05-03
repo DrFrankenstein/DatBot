@@ -18,6 +18,8 @@ class Session
 	void start();
 
 	rxcpp::observable<Models::Message> messages();
+	rxcpp::observable<Models::Message> messagesOfType(const Models::Message::Command& command);
+
 	void send(const Models::Message& message);
 
 	const std::string& nickname() const;
